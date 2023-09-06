@@ -1,14 +1,8 @@
 import pino from 'pino';
-import pretty from 'pino-pretty';
 /* Dotenv */
 import dotenv from 'dotenv';
 dotenv.config();
 
-const stream = pretty({
-  colorize: true
-});
-
-// unable to determine transport target for "pino-pretty" - VERCEL
 const configPino = {
   level: process.env.NODE_ENV === 'development' ? 'debug' : 'info',
   transport: {
@@ -30,9 +24,4 @@ const configPino = {
   }
 };
 
-
-export const Logger = pino(
-  process.env.NODE_ENV === 'development'
-  ? configPino
-  : stream
-);
+export const Logger = pino(configPino);
