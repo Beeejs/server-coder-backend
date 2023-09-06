@@ -2,44 +2,29 @@
 /* Dotenv */
 /* import dotenv from 'dotenv';
 dotenv.config(); */
-
 export const HOST =
-  process.env.NODE_ENV === 'development'
-    ? `http://localhost:${process.env.PORT}`
-    : process.env.HOST;
+process.env.NODE_ENV === 'development'
+? `http://localhost:${process.env.PORT}`
+: process.env.HOST;
 
 export const FRONT =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000'
-    : process.env.URL_FRONT;
-
-export const configCookiesLogin = process.env.NODE_ENV === 'development'
-?
-  {
-    maxAge: 60 * 60 * 1000,
-    httpOnly: false
-  }
-:
-  {
-    maxAge: 60 * 60 * 1000,
-    httpOnly: false,
-    secure: true,
-    sameSite: 'none',
-    domain: process.env.HOST
-  };
+process.env.NODE_ENV === 'development'
+? 'http://localhost:3000'
+: process.env.URL_FRONT;
 
 export const configCookiesRefresh = process.env.NODE_ENV === 'development'
 ?
   {
     maxAge: 60 * 60 * 1000,
-    httpOnly: false
+    httpOnly: true
   }
 :
   {
+    maxAge: 60 * 60 * 1000,
     httpOnly: true,
     secure: true,
     sameSite: 'lax',
-    maxAge: 60 * 60 * 1000
+    domain: process.env.DOMAIN_HOST
   };
 
 

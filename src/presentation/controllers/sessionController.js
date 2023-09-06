@@ -1,6 +1,6 @@
 import SessionManager from '../../domain/manager/sessionManager.js';
 /* Config */
-import { configCookiesLogin, configCookiesRefresh } from '../../config/index.js';
+import { configCookiesRefresh } from '../../config/index.js';
 
 
 const login = async(req, res, next) =>
@@ -15,7 +15,7 @@ const login = async(req, res, next) =>
     const { payload, newTkn, refreshTkn } = userLogued;
 
     res
-    .cookie('refreshToken', refreshTkn, configCookiesLogin)
+    .cookie('refreshToken', refreshTkn, configCookiesRefresh)
     .status(200)
     .send({ status: 'success', message: 'Login success!', user: payload, token: newTkn });
   }
