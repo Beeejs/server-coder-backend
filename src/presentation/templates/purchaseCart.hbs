@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Ecommerce Purchase CoderHouse</title>
+    </head>
+    <body>
+      <section style="text-align: center; color: white; background-color: #292C3E; padding: 25px">
+        <div>
+          <div style="margin: 50px 0px;">
+            <h1 style="font-size: 30px; font-weight: bold; margin: 10px 0px;">Ecommerce CoderHouse.</h1>
+            <h2 style="font-size: 18px;">Thank you for your purchase <span style="color: #E5F876;">{{payer.first_name}} {{payer.last_name}}</span>!</h2>
+          </div>
+          <h3 style="color:#E5F876; font-size: 20px; font-weight: bold;"> --- Purchase Ticket --- </h3>
+          <div style="margin: auto; text-align: center; background-color: #292C3E; width: fit-content; padding: 10px;">
+              <h4 style="color:#E5F876; font-size: 18px; font-weight: bold;"> -INFORMATION- </h4>
+              <p>Code: {{code}}</p>
+              <p>Date: {{purchase_datetime}}</p>
+              <p>Productos: 
+              {{#each products}}
+                {{#if this.title}}
+                  {{this.title}}{{#unless @last}}, {{/unless}}
+                {{else}}
+                  {{this.name}}{{#unless @last}}, {{/unless}}
+                {{/if}}
+              {{/each}}
+              <p>Total: ${{mount}}</p>
+          </div>
+          <h2>Thank you for shopping at <span style="color: #E5F876;">Ecommerce CoderHouse</span>.</h2>
+        </div>
+      </section>
+    </body>
+</html>

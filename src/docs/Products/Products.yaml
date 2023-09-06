@@ -1,0 +1,153 @@
+openapi: 3.0.0
+info:
+  title: Products
+  version: 1.0.0
+  description: Documentation of the Products API using Swagger.
+
+paths:
+  /api/products:
+    get:
+      summary: Get all products
+      description: Returns a list of all products. Supports filtering with limit, sort, and pagination (page).
+      tags:
+        - Products
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of products to return.
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+        - name: sort
+          in: query
+          description: Sorting order for the products (e.g., "title:asc", "price:desc").
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number for pagination.
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Successful response. Returns the list of products.
+    post:
+      summary: Create a new product
+      description: Creates a new product with the provided information.
+      tags:
+      - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      security:
+        - BearerAuth: []
+      responses:
+        '201':
+          description: Product created successfully.
+        '400':
+          description: Error in the request. Verify the data sent.
+
+  /api/products/{pId}:
+    get:
+      summary: Get a product by ID
+      description: Returns a specific product based on the provided ID.
+      tags:
+        - Products
+      parameters:
+        - name: pId
+          in: path
+          description: ID of the product to retrieve.
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Successful response. Returns the product details.
+        '404':
+          description: Product not found.
+    put:
+      summary: Update a product by ID
+      description: Updates the data of an existing product.
+      tags:
+        - Products
+      parameters:
+        - name: pId
+          in: path
+          description: ID of the product to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Product updated successfully.
+        '404':
+          description: Product not found.
+        '400':
+          description: Error in the request. Verify the data sent.
+    delete:
+      summary: Delete a product by ID
+      description: Deletes an existing product based on the provided ID.
+      tags:
+        - Products
+      parameters:
+        - name: pId
+          in: path
+          description: ID of the product to delete.
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: Product deleted successfully.
+        '404':
+          description: Product not found.
+
+components:
+  schemas:
+    ProductInput:
+      type: object
+      required:
+        - title
+        - description
+        - price
+        - code
+        - stock
+        - category
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        code:
+          type: number
+        stock:
+          type: number
+        category:
+          type: string
+        enable:
+          type: boolean
+          default: true

@@ -1,0 +1,161 @@
+openapi: 3.0.0
+info:
+  title: Sessions
+  version: 1.0.0
+  description: Documentation of the Sessions API using Swagger.
+
+paths:
+  /api/sessions/login:
+    post:
+      summary: User login
+      description: Authenticates a user by email and password.
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInput'
+      responses:
+        '200':
+          description: Successful login. Returns the user's session details.
+        '401':
+          description: Unauthorized. Invalid credentials.
+
+  /api/sessions/current:
+    post:
+      summary: Get current user
+      description: Retrieves the current user's session based on email and password.
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInput'
+      responses:
+        '200':
+          description: Successful response. Returns the current user's session details.
+        '401':
+          description: Unauthorized. Invalid credentials.
+
+  /api/sessions/signup:
+    post:
+      summary: User signup
+      description: Registers a new user with the provided information.
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupInput'
+      responses:
+        '201':
+          description: User registered successfully.
+        '400':
+          description: Error in the request. Verify the data sent.
+
+  /api/sessions/forgotpassword:
+    post:
+      summary: Forgot password
+      description: Sends a reset password email to the user based on the provided email.
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordInput'
+      responses:
+        '200':
+          description: Password reset email sent successfully.
+        '404':
+          description: User not found.
+
+  /api/sessions/resetpassword/{token}:
+    post:
+      summary: Reset password
+      description: Resets the user's password using the provided token and new password.
+      tags:
+        - Sessions
+      parameters:
+        - name: token
+          in: path
+          description: Reset password token received by the user.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordInput'
+      responses:
+        '200':
+          description: Password reset successful.
+        '404':
+          description: User not found.
+
+components:
+  schemas:
+    LoginInput:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    SignupInput:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
+        - role
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        age:
+          type: number
+          default: 18
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        enable:
+          type: boolean
+          default: true
+        role:
+          type: string
+
+    ForgotPasswordInput:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+
+    ResetPasswordInput:
+      type: object
+      required:
+        - password
+      properties:
+        password:
+          type: string

@@ -1,0 +1,145 @@
+openapi: 3.0.0
+info:
+  title: Tickets
+  version: 1.0.0
+  description: Documentation of the Tickets API using Swagger.
+
+paths:
+  /api/tickets:
+    get:
+      summary: Get all tickets
+      description: Returns a list of all tickets.
+      tags:
+        - Tickets
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of tickets to return.
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+        - name: page
+          in: query
+          description: Page number for pagination.
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Successful response. Returns the list of tickets.
+
+    post:
+      summary: Create a new ticket
+      description: Creates a new ticket with the provided information.
+      tags:
+        - Tickets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketInput'
+      security:
+        - BearerAuth: []
+      responses:
+        '201':
+          description: Ticket created successfully.
+        '400':
+          description: Error in the request. Verify the data sent.
+
+  /api/tickets/{tId}:
+    get:
+      summary: Get a ticket by ID
+      description: Returns a specific ticket based on the provided ID.
+      tags:
+        - Tickets
+      parameters:
+        - name: tId
+          in: path
+          description: ID of the ticket to retrieve.
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Successful response. Returns the ticket details.
+        '404':
+          description: Ticket not found.
+
+    put:
+      summary: Update a ticket by ID
+      description: Updates the data of an existing ticket.
+      tags:
+        - Tickets
+      parameters:
+        - name: tId
+          in: path
+          description: ID of the ticket to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketInput'
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Ticket updated successfully.
+        '404':
+          description: Ticket not found.
+        '400':
+          description: Error in the request. Verify the data sent.
+
+    delete:
+      summary: Delete a ticket by ID
+      description: Deletes an existing ticket based on the provided ID.
+      tags:
+        - Tickets
+      parameters:
+        - name: tId
+          in: path
+          description: ID of the ticket to delete.
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: Ticket deleted successfully.
+        '404':
+          description: Ticket not found.
+
+components:
+  schemas:
+    TicketInput:
+      type: object
+      required:
+        - code
+        - purchase_datetime
+        - amount
+        - purchaser
+      properties:
+        code:
+          type: string
+        purchase_datetime:
+          type: string
+          format: date-time
+        amount:
+          type: number
+        purchaser:
+          type: string
+        enable:
+          type: boolean
+          default: true

@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: Roles
+  version: 1.0.0
+  description: Documentation of the Roles API using Swagger.
+
+paths:
+  /api/roles:
+    get:
+      summary: Get all roles
+      description: Returns a list of all roles.
+      tags:
+        - Roles
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of roles to return.
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+        - name: page
+          in: query
+          description: Page number for pagination.
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Successful response. Returns the list of roles.
+
+    post:
+      summary: Create a new role
+      description: Creates a new role with the provided information.
+      tags:
+        - Roles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleInput'
+      security:
+        - BearerAuth: []
+      responses:
+        '201':
+          description: Role created successfully.
+        '400':
+          description: Error in the request. Verify the data sent.
+
+  /api/roles/{rId}:
+    get:
+      summary: Get a role by ID
+      description: Returns a specific role based on the provided ID.
+      tags:
+        - Roles
+      parameters:
+        - name: rId
+          in: path
+          description: ID of the role to retrieve.
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Successful response. Returns the role details.
+        '404':
+          description: Role not found.
+
+    put:
+      summary: Update a role by ID
+      description: Updates the data of an existing role.
+      tags:
+        - Roles
+      parameters:
+        - name: rId
+          in: path
+          description: ID of the role to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleInput'
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Role updated successfully.
+        '404':
+          description: Role not found.
+        '400':
+          description: Error in the request. Verify the data sent.
+
+    delete:
+      summary: Delete a role by ID
+      description: Deletes an existing role based on the provided ID.
+      tags:
+        - Roles
+      parameters:
+        - name: rId
+          in: path
+          description: ID of the role to delete.
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: Role deleted successfully.
+        '404':
+          description: Role not found.
+
+components:
+  schemas:
+    RoleInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        permissions:
+          type: object
+          properties:
+            roles:
+              type: array
+              items:
+                type: string
+            products:
+              type: array
+              items:
+                type: string
+            users:
+              type: array
+              items:
+                type: string
+            sessions:
+              type: array
+              items:
+                type: string
+            carts:
+              type: array
+              items:
+                type: string
+            tickets:
+              type: array
+              items:
+                type: string
+        enable:
+          type: boolean
+          default: true

@@ -1,0 +1,1 @@
+npm run command -- addUser -fn admin -ln admin -a 19 -e admin@admin.com -p admin1234 -r admin

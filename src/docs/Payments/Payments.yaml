@@ -1,0 +1,142 @@
+openapi: 3.0.0
+info:
+  title: Payments
+  version: 1.0.0
+  description: Documentation of the Payments API using Swagger.
+
+paths:
+  /api/payments/create-order:
+    post:
+      summary: Create a payment order
+      description: Creates a payment order using the specified payment service.
+      tags:
+      - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentOrderInput'
+      responses:
+        '200':
+          description: Payment order created successfully.
+        '400':
+          description: Error in the request. Verify the data sent.
+
+components:
+  schemas:
+    PaymentOrderInput:
+      type: object
+      required:
+        - service
+        - order
+        - payer
+      properties:
+        service:
+          type: string
+          description: The payment service to use (e.g., "MERCADO PAGO" or "PAYPAL").
+        order:
+          oneOf:
+            - $ref: '#/components/schemas/PayPalOrder'
+            - $ref: '#/components/schemas/MercadoPagoOrder'
+        payer:
+          oneOf:
+            - $ref: '#/components/schemas/PayPalPayer'
+            - $ref: '#/components/schemas/MercadoPagoPayer'
+
+    PayPalOrder:
+      type: object
+      properties:
+        amount:
+          type: object
+          properties:
+            value:
+              type: string
+            currency_code:
+              type: string
+            breakdown:
+              type: object
+              properties:
+                item_total:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                    currency_code:
+                      type: string
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              unit_amount:
+                type: object
+                properties:
+                  value:
+                    type: string
+                  currency_code:
+                    type: string
+              quantity:
+                type: string
+        service:
+          type: string
+      required:
+        - amount
+        - items
+
+    MercadoPagoOrder:
+      type: object
+      properties:
+        order:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              unit_price:
+                type: number
+              currency_id:
+                type: string
+              quantity:
+                type: integer
+        payer:
+          type: object
+          properties:
+            name:
+              type: string
+            surname:
+              type: string
+            email:
+              type: string
+            phone:
+              type: object
+              properties:
+                area_code:
+                  type: string
+                number:
+                  type: integer
+            identification:
+              type: object
+              properties:
+                type:
+                  type: string
+                number:
+                  type: string
+            address:
+              type: object
+              properties:
+                street_name:
+                  type: string
+                street_number:
+                  type: integer
+                zip_code:
+                  type: string
+        service:
+          type: string
+      required:
+        - order
+        - payer
+        - service

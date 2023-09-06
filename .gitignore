@@ -1,0 +1,14 @@
+### Node ###
+
+# Node Modules
+/node_modules
+
+# Enveiroments
+.env
+
+#Logs
+/logs
+*.log
+
+#ngrok
+ngrok.exe

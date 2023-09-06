@@ -1,0 +1,41 @@
+openapi: 3.0.0
+info:
+  title: Email
+  version: 1.0.0
+  description: Documentation of the Email API using Swagger.
+
+paths:
+  /api/emails:
+    post:
+      summary: Send an email
+      description: Sends an email with the provided data, recipient email, and template.
+      tags:
+        - Emails
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailInput'
+      responses:
+        '200':
+          description: Email sent successfully.
+        '400':
+          description: Error in the request. Verify the data sent.
+
+components:
+  schemas:
+    EmailInput:
+      type: object
+      required:
+        - data
+        - email
+        - template
+      properties:
+        data:
+          type: object
+        email:
+          type: string
+          format: email
+        template:
+          type: string
