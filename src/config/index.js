@@ -11,7 +11,7 @@ export const HOST =
 export const FRONT =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
-    : process.env.URL_FRON;
+    : process.env.URL_FRONT;
 
 export const configCookiesLogin = process.env.NODE_ENV === 'development'
 ?
