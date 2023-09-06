@@ -21,10 +21,10 @@ export const configCookiesRefresh = process.env.NODE_ENV === 'development'
 :
   {
     maxAge: 60 * 60 * 1000,
-    httpOnly: false,
+    httpOnly: true,
     secure: true,
-    sameSite: 'none'
-    // domain: process.env.DOMAIN_HOST
+    sameSite: 'none',
+    domain: process.env.DOMAIN_HOST
   };
 
 
