@@ -10,6 +10,8 @@ import { userLoginValidation, userRegisterValidation } from '../validations/sess
 import { userIsActive, userUpdateValidation } from '../validations/user/userValidation.js';
 /* Jwt */
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken, verifyAccessToken } from '../../utils/tokenUtils.js';
+/* Config */
+import { FRONT } from '../../config/index.js';
 
 class SessionManager
 {
@@ -123,7 +125,7 @@ class SessionManager
 
     const token = await generateAccessToken(getUser, { expiresIn: '300s' });
 
-    await this.emailService.sendEmail({ link: `${process.env.URL_FRONT}/resetpassword/${token}` }, email, 'forgotPassword');
+    await this.emailService.sendEmail({ link: `${FRONT}/resetpassword/${token}` }, email, 'forgotPassword');
 
     return { ...getUser, password: undefined };
   }
